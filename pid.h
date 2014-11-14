@@ -3,17 +3,16 @@
 #define PID_H_
 
 struct PID_parameters{
-	float Kp;
-	float Ki;
-	float Kd;
-	float reference;
-	float period;
-	float error;
+	double Kp;
+	double Ki;
+	double Kd;
+	double reference;
+	double period;
 };
 
 
 
-float PID_controller(struct PID_parameters parameters, float measurement);
+double PID_controller(struct PID_parameters parameters, double measurement);
 
 
 
