@@ -14,13 +14,14 @@ void setFromDouble(char *buffer, double u);
 #define port 9999
 #define period 0.005
 int main(void){
-    printf("period: %f\n",period); 
     struct udp_conn udpcon;
+    
+    
     
 	udp_init_client(&udpcon, port, server_ip);
     
     char buffer[255];
-    
+           
 	struct PID_parameters parameters= (struct PID_parameters){
 		10,
 		800,
@@ -36,6 +37,7 @@ int main(void){
 	udp_send(&udpcon, "START", 6);
 	while(1){
 	    udp_send(&udpcon, "GET", 4);
+	    
 	    while(1){
 	        udp_receive(&udpcon, buffer, 255);
 	        if (buffer[0]=='G'){
@@ -43,17 +45,13 @@ int main(void){
 	        }
 	    }
 	    
-	    
 	    y = doubleFromReply(buffer);
-	    
 	    u = PID_controller(parameters, y);
 	    
 	    setFromDouble(buffer,u);
-	    printf("set msg: %s\n", buffer);
 	    udp_send(&udpcon, buffer, 255);
 	    clock_nanosleep(&next);
 	    timespec_add_us(&next, (int)(period*1000000));
-	    //printf("i: %d\n",i);
 	    if (i++*period >= 0.5){
 	        break;
 	    }
@@ -82,7 +80,6 @@ void setFromDouble(char *buffer, double u){
 }
 
 double doubleFromReply(char* reply){
-    //printf("reply: %s\n",reply);
     char* ptr;
 	ptr=&reply[8];
 	char dummy[255];
@@ -92,8 +89,6 @@ double doubleFromReply(char* reply){
 	    ptr++;
 	}
 	dummy[i]='\0';
-	//printf("dummy: %s\n", dummy);
-	//printf("double: %f\n", atof(dummy));
 	return atof(dummy);
 }
 

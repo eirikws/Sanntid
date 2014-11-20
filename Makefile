@@ -5,7 +5,7 @@ SOURCES=main.c udp.h udp.c pid.h pid.c
 all: $(TARGET)
 OBJECTS=$(SOURCES:.c=.o)
 
-export PATH = $PATH:/home/student/Desktop/G17_ex10/buildroot-avr32-v3.0.0_TTK4147/output/staging/usr/bin
+export PATH = $PATH:/home/student/gr04/buildroot-avr32-v3.0.0_TTK4147/output/staging/usr/bin
 $(TARGET): $(OBJECTS)
 	avr32-linux-gcc $(LDFLAGS) -o $@ $^
 
